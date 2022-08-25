@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import TodoCtx from '../../store/context-Todo';
+import AddItem from '../addItem/AddItems';
 import TodoItems from '../todoItems/TodoItems';
 function ListItems() {
   const todoCtx = useContext(TodoCtx);
@@ -17,6 +18,7 @@ function ListItems() {
           />
         ))}
       </ul>
+      <AddItem />
     </>
   );
 }

@@ -2,12 +2,16 @@ import classes from './AddItems.module.css';
 
 function AddItem() {
   return (
-    <div className={classes.additem}>
-      <div>Item</div>
-      <div className={classes.icon}>
-        <ion-icon name="close-outline"></ion-icon>
+    <form className={classes.additem}>
+      <div>
+        <label htmlFor="name">Name: </label>
+        <input type="text" placeholder="example mohammed salah" id="name" />
       </div>
-    </div>
+      <div>
+        <label htmlFor="age">Age: </label>
+        <input type="text" placeholder="example mohammed salah" id="age" />
+      </div>
+    </form>
   );
 }
 
