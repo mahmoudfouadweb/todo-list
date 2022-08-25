@@ -1,6 +1,6 @@
 import './App.css';
-import AddItem from './component/addItem/AddItems';
-import TodoItems from './component/todoItems/TodoItems';
+
+import ListItem from './component/listItem/ListItem';
 
 function App() {
   let state = {
@@ -14,8 +14,7 @@ function App() {
   return (
     <>
       <h1>TodoList App</h1>
-      <TodoItems />
-      <AddItem />
+      <ListItem />
     </>
   );
 }
