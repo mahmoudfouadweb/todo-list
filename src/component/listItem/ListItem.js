@@ -4,7 +4,7 @@ import AddItem from '../addItem/AddItems';
 import TodoItems from '../todoItems/TodoItems';
 function ListItems() {
   const todoCtx = useContext(TodoCtx);
-  console.log(todoCtx);
+  console.log('IMPORTED todoCtx', todoCtx);
   return (
     <>
       <h1>List Item:</h1>

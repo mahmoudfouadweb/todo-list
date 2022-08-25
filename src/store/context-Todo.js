@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useState } from 'react';
 
 const TodoCtx = createContext({
   item: [{}],
@@ -8,11 +8,21 @@ const TodoCtx = createContext({
 });
 
 export function TodoContextProvider(props) {
-  function addTodo() {}
-  function removeTodo() {}
-  function isTodoImportant() {}
+  const [todos, setTodos] = useState({});
 
-  const todos = {
+  function addTodo(todos) {
+    setTodos(prevTodos => {
+      return prevTodos.concat(todos);
+    });
+  }
+  function removeTodo(todoID) {
+    setTodos(prevTodos => prevTodos.filter(todo => todo.id !== todoID));
+  }
+  function isTodoImportant(todoID) {
+    todos.some(todo => todo.id === todoID);
+  }
+
+  const todosCtx = {
     item: [
       { id: 1, name: 'mahmoud', age: 31 },
       { id: 2, name: 'rovy', age: 6 },
@@ -22,8 +32,8 @@ export function TodoContextProvider(props) {
     removeTodo: removeTodo,
     isTodoImportant: isTodoImportant,
   };
-  console.log(todos);
-  return <TodoCtx.Provider value={todos}>{props.children}</TodoCtx.Provider>;
+  console.log('Original todosCtx', todosCtx);
+  return <TodoCtx.Provider value={todosCtx}>{props.children}</TodoCtx.Provider>;
 }
 
 export default TodoCtx;
