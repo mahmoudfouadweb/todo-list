@@ -8,9 +8,15 @@ function ListItems() {
     <>
       <h1>List Item:</h1>
       <ul>
-        <TodoItems />
+        {todoCtx.item.map(todo => (
+          <TodoItems
+            key={todo.id}
+            id={todo.id}
+            name={todo.name}
+            age={todo.age}
+          />
+        ))}
       </ul>
-      ;
     </>
   );
 }

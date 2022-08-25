@@ -1,4 +1,28 @@
 .todo {
+  display: flex;
+  list-style: none;
   color: #222;
   font-size: 2.4rem;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.icon:hover {
+  color: red;
+}
+
+.space {
+  margin-right: 2rem;
 }

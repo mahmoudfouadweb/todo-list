@@ -15,8 +15,8 @@ export function TodoContextProvider(props) {
   const todos = {
     item: [
       { id: 1, name: 'mahmoud', age: 31 },
-      { id: 1, name: 'rovy', age: 6 },
-      { id: 1, name: 'joo', age: 4 },
+      { id: 2, name: 'rovy', age: 6 },
+      { id: 3, name: 'joo', age: 4 },
     ],
     addTodo: addTodo,
     removeTodo: removeTodo,
