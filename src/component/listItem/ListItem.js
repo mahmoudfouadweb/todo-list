@@ -9,7 +9,7 @@ function ListItems() {
     <>
       <h1>List Item:</h1>
       <ul>
-        {todoCtx.item.map(todo => (
+        {todoCtx.itemArr.map(todo => (
           <TodoItems
             key={todo.id}
             id={todo.id}

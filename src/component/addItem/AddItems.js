@@ -18,12 +18,15 @@ function AddItem() {
     const age = ageRef.current.value;
     const id = idRef.current.value;
     console.log(id, name, age);
-    setTodos({
-      id: id,
-      name: name,
-      age: age,
-    });
+    const todo = {
+      id,
+      name,
+      age,
+    };
+    console.log(todo);
+    setTodos(todoCtx.addTodo(todo));
   }
+  console.log('Updated todos', todos);
   return (
     <form className={classes.additem}>
       <div>
