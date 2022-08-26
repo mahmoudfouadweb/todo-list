@@ -59,7 +59,16 @@ function App() {
       <h1>Todo List App</h1>
       <br></br>
       {/* Update task  */}
-      <div className="row"></div>
+      <div className="row">
+        <div className="col">
+          <input className="form-control form-control-lg" />
+        </div>
+        <div className="col-auto">
+          <button className="btn btn-lg btn-success mr-20">Update</button>
+          <button className="btn btn-lg btn-warning">Cancel</button>
+        </div>
+      </div>
+      <br />
 
       {/* Add Task */}
       <div className="row">
@@ -70,6 +79,7 @@ function App() {
           <button className="btn btn-lg btn-success">Add Task</button>
         </div>
       </div>
+      <br />
       {/* {Display TODOS} */}
       {toDo && toDo.length ? '' : 'No todo to show...'}
       {toDo &&
