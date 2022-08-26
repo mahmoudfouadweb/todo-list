@@ -13,29 +13,41 @@ import classes from './component/todoItems/TodoItems.module.css';
 
 function App() {
   // task TodoList state
-  const [toDo, SetToDo] = useState([
+  const [toDo, setToDo] = useState([
     { id: 1, title: 'Task 1', status: false },
-    { id: 3, title: 'Task 3', status: false },
     { id: 2, title: 'Task 2', status: false },
   ]);
   // Temp State
-  const [newTask, setNewTAsk] = useState('');
+  const [newTask, setNewTask] = useState('');
   const [updateData, setUpdateData] = useState('');
 
-  // add Task
+  // add Task (DONE ✔)
   //////////////////////////////
-  function addTask() {
-    //
+  function addTask(todo) {
+    if (newTask) {
+      const id = todo.length + 1;
+      const newEntry = { id: id, title: newTask, status: false };
+      setToDo([...todo, newEntry]);
+      setNewTask('');
+    }
   }
   //////////////////////////////
   // delete Task
   function removeTask(id) {
+    setToDo(toDo.filter(prevToDo => id !== prevToDo.id));
     //
   }
   //////////////////////////////
   // Mark task as done or Completed
   function markTask(id) {
-    //
+    setToDo(
+      toDo.map(item => {
+        if (item.id === id) {
+          return { ...item, status: !item.status };
+        }
+        return item;
+      })
+    );
   }
   //////////////////////////////
   // Cancel update
@@ -73,10 +85,19 @@ function App() {
       {/* Add Task */}
       <div className="row">
         <div className="col">
-          <input className="form-control form-control-lg" />
+          <input
+            className="form-control form-control-lg"
+            onChange={e => setNewTask(e.target.value)}
+            value={newTask}
+          />
         </div>
         <div className="col-auto">
-          <button className="btn btn-lg btn-success">Add Task</button>
+          <button
+            className="btn btn-lg btn-success"
+            onClick={() => addTask(toDo)}
+          >
+            Add Task
+          </button>
         </div>
       </div>
       <br />
@@ -93,14 +114,17 @@ function App() {
                     <span className="taskNumber">{i + 1}</span>
                     <span className="taskText">{task.title}</span>
                   </div>
-                  <div className="iconWrap">
-                    <span title="Completed / Not Completed">
+                  <div className="iconsWrap">
+                    <span
+                      title="Completed / Not Completed"
+                      onClick={() => markTask(task.id)}
+                    >
                       <FontAwesomeIcon icon={faCircleCheck} />
                     </span>
                     <span title="Edit">
                       <FontAwesomeIcon icon={faPen} />
                     </span>
-                    <span title="Delete">
+                    <span title="Delete" onClick={() => removeTask(task.id)}>
                       <FontAwesomeIcon icon={faTrashCan} />
                     </span>
                   </div>
