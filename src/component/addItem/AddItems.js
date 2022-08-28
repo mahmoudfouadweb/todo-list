@@ -1,13 +1,13 @@
-import { Component, useRef } from 'react';
-import React from 'react';
+// import { Component, useRef } from 'react';
+// import React from 'react';
 
-import classes from './AddItems.module.css';
+// import classes from './AddItems.module.css';
 
-class AddItem extends Component {
-  render() {
-    return <div>add item</div>;
-  }
-}
+// class AddItem extends Component {
+//   render() {
+//     return <div>add item</div>;
+//   }
+// }
 // function AddItem() {
 //   const nameRef = useRef();
 //   const ageRef = useRef();
@@ -55,4 +55,4 @@ class AddItem extends Component {
 //   );
 // }
 
-export default AddItem;
+// export default AddItem;

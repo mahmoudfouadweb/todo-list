@@ -7,15 +7,13 @@ import {
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
-import AddItem from './component/addItem/AddItems';
-import TodoItems from './component/todoItems/TodoItems';
-import classes from './component/todoItems/TodoItems.module.css';
 
 function App() {
   // task TodoList state
   const [toDo, setToDo] = useState([
     { id: 1, title: 'Task 1', status: false },
     { id: 2, title: 'Task 2', status: false },
+    { id: 3, title: 'Task 3', status: false },
   ]);
   // Temp State
   const [newTask, setNewTask] = useState('');
@@ -51,18 +49,28 @@ function App() {
   }
   //////////////////////////////
   // Cancel update
-  function cancelUpdate(e) {
-    //
+  function cancelUpdate() {
+    setUpdateData('');
   }
   //////////////////////////////
   // change task for update
   function changeTask(e) {
-    //
+    let newEntry = {
+      id: updateData.id,
+      title: e.target.value,
+      status: updateData.status ? true : false,
+    };
+    setUpdateData(newEntry);
   }
   // update task
   //////////////////////////////
-  function updateTask(e) {
-    //
+  function updateTask() {
+    const filteredData = [...toDo].filter(item => item.id !== updateData.id);
+    const mergData = [...filteredData, updateData];
+    setToDo(mergData);
+    setUpdateData('');
+    console.log('updateData.id', updateData.id);
+    console.log('filteredData', filteredData);
   }
 
   return (
@@ -70,37 +78,59 @@ function App() {
       <br></br>
       <h1>Todo List App</h1>
       <br></br>
-      {/* Update task  */}
-      <div className="row">
-        <div className="col">
-          <input className="form-control form-control-lg" />
-        </div>
-        <div className="col-auto">
-          <button className="btn btn-lg btn-success mr-20">Update</button>
-          <button className="btn btn-lg btn-warning">Cancel</button>
-        </div>
-      </div>
-      <br />
 
+      {/* Update task  */}
+
+      {updateData && updateData.title ? (
+        // update field
+        <>
+          <div className="row">
+            <div className="col">
+              <input
+                value={updateData && updateData}
+                onChange={e => changeTask(e)}
+                className="form-control form-control-lg"
+              />
+            </div>
+            <div className="col-auto">
+              <button
+                className="btn btn-lg btn-success mr-20"
+                onClick={updateTask}
+              >
+                Update
+              </button>
+              <button className="btn btn-lg btn-warning" onClick={cancelUpdate}>
+                Cancel
+              </button>
+            </div>
+          </div>
+          <br />
+        </>
+      ) : (
+        // new Entry Field
+        <>
+          <div className="row">
+            <div className="col">
+              <input
+                value={newTask}
+                onChange={e => setNewTask(e.target.value)}
+                className="form-control form-control-lg"
+              />
+            </div>
+            <div className="col-auto">
+              <button
+                className="btn btn-lg btn-success"
+                onClick={() => addTask(toDo)}
+              >
+                Add Task
+              </button>
+            </div>
+          </div>
+          <br />
+        </>
+      )}
       {/* Add Task */}
-      <div className="row">
-        <div className="col">
-          <input
-            className="form-control form-control-lg"
-            onChange={e => setNewTask(e.target.value)}
-            value={newTask}
-          />
-        </div>
-        <div className="col-auto">
-          <button
-            className="btn btn-lg btn-success"
-            onClick={() => addTask(toDo)}
-          >
-            Add Task
-          </button>
-        </div>
-      </div>
-      <br />
+
       {/* {Display TODOS} */}
       {toDo && toDo.length ? '' : 'No todo to show...'}
       {toDo &&
@@ -121,9 +151,21 @@ function App() {
                     >
                       <FontAwesomeIcon icon={faCircleCheck} />
                     </span>
-                    <span title="Edit">
-                      <FontAwesomeIcon icon={faPen} />
-                    </span>
+                    {task.status ? null : (
+                      <span
+                        title="Edit"
+                        onClick={() =>
+                          setUpdateData({
+                            id: task.id,
+                            title: task.title,
+                            status: task.status ? true : false,
+                          })
+                        }
+                      >
+                        <FontAwesomeIcon icon={faPen} />
+                      </span>
+                    )}
+
                     <span title="Delete" onClick={() => removeTask(task.id)}>
                       <FontAwesomeIcon icon={faTrashCan} />
                     </span>
