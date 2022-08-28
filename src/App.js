@@ -10,11 +10,32 @@ import './App.css';
 
 function App() {
   // task TodoList state
-  const [toDo, setToDo] = useState([
+  const [todo, setTodo] = useState([
     { id: 1, title: 'Task 1', status: false },
     { id: 2, title: 'Task 2', status: false },
     { id: 3, title: 'Task 3', status: false },
   ]);
+  const [newTask, setNewTask] = useState('');
+  const [updateTask, setUpdateTask] = useState('');
+
+  function getNewTask() {
+    console.log('added');
+  }
+  // function du() {
+  //   //
+  // }
+  // function du() {
+  //   //
+  // }
+  // function du() {
+  //   //
+  // }
+  // function du() {
+  //   //
+  // }
+  // function du() {
+  //   //
+  // }
 
   return (
     <div className="App container">
@@ -39,42 +60,39 @@ function App() {
           <input className="form-control form-control-lg" />
         </div>
         <div className="col-auto">
-          <button className="btn btn-lg btn-success">Add Task</button>
+          <button className="btn btn-lg btn-success" onClick={getNewTask}>
+            Add Task
+          </button>
         </div>
       </div>
       <br />
       {/* Add Task */}
       {/* {Display TODOS} */}
       {/* {toDo && toDo.length ? '' : 'No todo to show...'} */}
-      {toDo &&
-        toDo
-          .sort((a, b) => (a.id > b.id ? 1 : -1))
-          .map((task, i) => {
-            return (
-              <React.Fragment key={task.id}>
-                <div className="taskBg col">
-                  <div className={task.status ? 'done' : ''}>
-                    <span className="taskNumber">{i + 1}</span>
-                    <span className="taskText">{task.title}</span>
-                  </div>
-                  <div className="iconsWrap">
-                    <span title="Completed / Not Completed">
-                      <FontAwesomeIcon icon={faCircleCheck} />
-                    </span>
-                    {task.status ? null : (
-                      <span title="Edit">
-                        <FontAwesomeIcon icon={faPen} />
-                      </span>
-                    )}
 
-                    <span title="Delete">
-                      <FontAwesomeIcon icon={faTrashCan} />
-                    </span>
-                  </div>
-                </div>
-              </React.Fragment>
-            );
-          })}
+      {todo.map((task, i) => {
+        return (
+          <React.Fragment key={task.id}>
+            <div className="taskBg col">
+              <div className={task.status ? 'done' : ''}>
+                <span className="taskNumber">{i + 1}</span>
+                <span className="taskText">{task.title}</span>
+              </div>
+              <div className="iconsWrap">
+                <span title="Completed / Not Completed">
+                  <FontAwesomeIcon icon={faCircleCheck} />
+                </span>
+                <span title="Edit">
+                  <FontAwesomeIcon icon={faPen} />
+                </span>
+                <span title="Delete">
+                  <FontAwesomeIcon icon={faTrashCan} />
+                </span>
+              </div>
+            </div>
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 }
