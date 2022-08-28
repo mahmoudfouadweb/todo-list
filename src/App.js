@@ -19,11 +19,22 @@ function App() {
   const [updateTask, setUpdateTask] = useState('');
 
   function getNewTask() {
-    console.log('added');
+    if (newTask) {
+      setTodo([
+        ...todo,
+        {
+          id: todo.length + 1,
+          title: newTask,
+          status: false,
+        },
+      ]);
+      setNewTask('');
+      console.log(todo);
+    }
   }
-  // function du() {
-  //   //
-  // }
+  function taskDoneToggle(id) {
+    console.log(id);
+  }
   // function du() {
   //   //
   // }
@@ -57,7 +68,11 @@ function App() {
       {/* // new Entry Field */}
       <div className="row">
         <div className="col">
-          <input className="form-control form-control-lg" />
+          <input
+            className="form-control form-control-lg"
+            value={newTask}
+            onChange={e => setNewTask(e.currentTarget.value)}
+          />
         </div>
         <div className="col-auto">
           <button className="btn btn-lg btn-success" onClick={getNewTask}>
@@ -79,7 +94,10 @@ function App() {
                 <span className="taskText">{task.title}</span>
               </div>
               <div className="iconsWrap">
-                <span title="Completed / Not Completed">
+                <span
+                  title="Completed / Not Completed"
+                  onClick={() => taskDoneToggle(task.id)}
+                >
                   <FontAwesomeIcon icon={faCircleCheck} />
                 </span>
                 <span title="Edit">
