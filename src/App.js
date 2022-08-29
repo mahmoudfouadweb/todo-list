@@ -17,7 +17,8 @@ function App() {
   ]);
   const [newTask, setNewTask] = useState('');
   const [updateTask, setUpdateTask] = useState('');
-
+  ///////////////////////////////////////
+  //
   function getNewTask() {
     if (newTask) {
       setTodo([
@@ -29,21 +30,36 @@ function App() {
         },
       ]);
       setNewTask('');
-      console.log(todo);
     }
   }
+  ///////////////////////////////////////
+  //
   function taskDoneToggle(id) {
-    console.log(id);
+    const tasks = todo.map(item => {
+      if (item.id === id) {
+        return {
+          ...item,
+          status: !item.status,
+        };
+      }
+      return item;
+    });
+    setTodo(tasks);
+    console.log(todo);
   }
-  // function du() {
-  //   //
-  // }
-  // function du() {
-  //   //
-  // }
-  // function du() {
-  //   //
-  // }
+  ///////////////////////////////////////
+  //
+  function deleteItem(id) {
+    setTodo(todo.filter(item => item.id !== id));
+  }
+  ///////////////////////////////////////
+  //
+  function cancelUpdate() {
+    setUpdateTask('');
+  }
+  function updateTaskBtn() {
+    console.log(updateTask);
+  }
   // function du() {
   //   //
   // }
@@ -57,11 +73,22 @@ function App() {
       {/* // update field */}
       <div className="row">
         <div className="col">
-          <input className="form-control form-control-lg" />
+          <input
+            className="form-control form-control-lg"
+            value={updateTask}
+            onChange={e => setUpdateTask(e.target.value)}
+          />
         </div>
         <div className="col-auto">
-          <button className="btn btn-lg btn-success mr-20">Update</button>
-          <button className="btn btn-lg btn-warning">Cancel</button>
+          <button
+            className="btn btn-lg btn-success mr-20"
+            onClick={updateTaskBtn}
+          >
+            Update
+          </button>
+          <button className="btn btn-lg btn-warning" onClick={cancelUpdate}>
+            Cancel
+          </button>
         </div>
       </div>
       <br />
@@ -103,7 +130,7 @@ function App() {
                 <span title="Edit">
                   <FontAwesomeIcon icon={faPen} />
                 </span>
-                <span title="Delete">
+                <span title="Delete" onClick={() => deleteItem(task.id)}>
                   <FontAwesomeIcon icon={faTrashCan} />
                 </span>
               </div>
