@@ -85,43 +85,51 @@ function App() {
       <br></br>
       {/* Update task  */}
       {/* // update field */}
-      <div className="row">
-        <div className="col">
-          <input
-            className="form-control form-control-lg"
-            value={updateTask && updateTask.title}
-            onChange={e => editTitleOnChange(e.target.value)}
-          />
-        </div>
-        <div className="col-auto">
-          <button
-            className="btn btn-lg btn-success mr-20"
-            onClick={updateTaskBtn}
-          >
-            Update
-          </button>
-          <button className="btn btn-lg btn-warning" onClick={cancelUpdate}>
-            Cancel
-          </button>
-        </div>
-      </div>
-      <br />
+      {updateTask.title ? (
+        <>
+          <div className="row">
+            <div className="col">
+              <input
+                className="form-control form-control-lg"
+                value={updateTask && updateTask.title}
+                onChange={e => editTitleOnChange(e.target.value)}
+              />
+            </div>
+            <div className="col-auto">
+              <button
+                className="btn btn-lg btn-success mr-20"
+                onClick={updateTaskBtn}
+              >
+                Update
+              </button>
+              <button className="btn btn-lg btn-warning" onClick={cancelUpdate}>
+                Cancel
+              </button>
+            </div>
+          </div>
+          <br />
+        </>
+      ) : (
+        <>
+          <div className="row">
+            <div className="col">
+              <input
+                className="form-control form-control-lg"
+                value={newTask}
+                onChange={e => setNewTask(e.currentTarget.value)}
+              />
+            </div>
+            <div className="col-auto">
+              <button className="btn btn-lg btn-success" onClick={getNewTask}>
+                Add Task
+              </button>
+            </div>
+          </div>
+          <br />
+        </>
+      )}
       {/* // new Entry Field */}
-      <div className="row">
-        <div className="col">
-          <input
-            className="form-control form-control-lg"
-            value={newTask}
-            onChange={e => setNewTask(e.currentTarget.value)}
-          />
-        </div>
-        <div className="col-auto">
-          <button className="btn btn-lg btn-success" onClick={getNewTask}>
-            Add Task
-          </button>
-        </div>
-      </div>
-      <br />
+
       {/* Add Task */}
       {/* {Display TODOS} */}
       {/* {toDo && toDo.length ? '' : 'No todo to show...'} */}
