@@ -15,6 +15,7 @@ function App() {
     { id: 3, title: 'Task 3', done: false },
   ]);
   const [enteredValue, setEnteredValue] = useState('');
+  const [updateTask, setUpdateTask] = useState('');
   /////////////////////////////////////////
   //
   const addTaskHandler = e => {
@@ -22,29 +23,43 @@ function App() {
       setEnteredTasks([
         ...enteredTasks,
         {
-          id: enteredTasks,
+          id: enteredTasks.length + 1,
           title: enteredValue,
           done: false,
         },
       ]);
+      setEnteredValue('');
     }
   };
-  console.log(enteredTasks);
   /////////////////////////////////////////
   //
-  const updateTaskHandler = () => {
+  const pressEnterKey = e => {
+    const enter = e.key === 'Enter' ? addTaskHandler() : null;
+    return enter;
+  };
+  /////////////////////////////////////////
+  //
+  const updateBtnTaskHandler = () => {
     //
   };
   /////////////////////////////////////////
   //
-  const cancelUpdateHandler = () => {
+  const cancelBtnUpdateHandler = () => {
     //
   };
   /////////////////////////////////////////
   //
-  const completeTaskHandler = () => {
-    //
+  const completeTaskHandler = id => {
+    setEnteredTasks(
+      enteredTasks.map(task => {
+        if (task.id === id) {
+          return { id: id, title: task.title, status: !task.status };
+        }
+        return task;
+      })
+    );
   };
+
   /////////////////////////////////////////
   //
   const editTaskHandler = () => {
@@ -83,6 +98,7 @@ function App() {
             <input
               className="form-control form-control-lg"
               onChange={e => setEnteredValue(e.target.value)}
+              onKeyDown={pressEnterKey}
               value={enteredValue}
             />
           </div>
@@ -110,7 +126,10 @@ function App() {
                 <span className="taskText">{task.title}</span>
               </div>
               <div className="iconsWrap">
-                <span title="Completed / Not Completed">
+                <span
+                  title="Completed / Not Completed"
+                  onClick={() => completeTaskHandler(task.id)}
+                >
                   <FontAwesomeIcon icon={faCircleCheck} />
                 </span>
                 <span title="Edit">
