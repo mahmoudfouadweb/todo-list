@@ -9,18 +9,27 @@ import {
 import './App.css';
 
 function App() {
-  const [todo, setTodo] = useState([
+  const [enteredTasks, setEnteredTasks] = useState([
     { id: 1, title: 'Task 1', done: false },
     { id: 2, title: 'Task 2', done: false },
     { id: 3, title: 'Task 3', done: false },
   ]);
-  const [] = useState('');
-  const [] = useState('');
+  const [enteredValue, setEnteredValue] = useState('');
   /////////////////////////////////////////
   //
-  const addTaskHandler = () => {
-    //
+  const addTaskHandler = e => {
+    if (enteredValue) {
+      setEnteredTasks([
+        ...enteredTasks,
+        {
+          id: enteredTasks,
+          title: enteredValue,
+          done: false,
+        },
+      ]);
+    }
   };
+  console.log(enteredTasks);
   /////////////////////////////////////////
   //
   const updateTaskHandler = () => {
@@ -61,7 +70,7 @@ function App() {
             <input className="form-control form-control-lg" />
           </div>
           <div className="col-auto">
-            <button>Update</button>
+            <button className="btn btn-lg btn-success">Update</button>
             <button className="btn btn-lg btn-warning">Cancel</button>
           </div>
         </div>
@@ -71,10 +80,16 @@ function App() {
       <>
         <div className="row">
           <div className="col">
-            <input className="form-control form-control-lg" />
+            <input
+              className="form-control form-control-lg"
+              onChange={e => setEnteredValue(e.target.value)}
+              value={enteredValue}
+            />
           </div>
           <div className="col-auto">
-            <button className="btn btn-lg btn-success">Add Task</button>
+            <button className="btn btn-lg btn-success" onClick={addTaskHandler}>
+              Add Task
+            </button>
           </div>
         </div>
         <br />
@@ -86,7 +101,7 @@ function App() {
       {/* {Display TODOS} */}
       {/* {toDo && toDo.length ? '' : 'No todo to show...'} */}
 
-      {todo.map((task, i) => {
+      {enteredTasks.map((task, i) => {
         return (
           <React.Fragment key={task.id}>
             <div className="taskBg col">
