@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -7,26 +6,81 @@ import {
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
+import React, { useState } from 'react';
 
 function App() {
   /////////////////////////////////////////
   //
-  let enteredTasks = [];
+  const [enteredTasks, setEnteredTasks] = useState([
+    { id: 1, task: 'Task 1', done: false },
+  ]);
+  const [updateTask, setUpdateTask] = useState('');
+  const [toggleTask, setToggleTask] = useState('');
+  /////////////////////////////////////////
+  //
+  // const onChangeHandler = e => setToggleTask(e.target.value);
+  /////////////////////////////////////////
+  //
+  const completeToggleHandler = id => {
+    setEnteredTasks([
+      ...enteredTasks.map(task => {
+        if (id === task.id) {
+          return { id: id, task: task.task, done: !task.done };
+        }
+        return task;
+      }),
+    ]);
+  };
+  /////////////////////////////////////////
+  //
+  const editBtnHandler = () => {
+    //
+  };
+  /////////////////////////////////////////
+  //
+  const deleteBtnHandler = id => {
+    setEnteredTasks([...enteredTasks.filter(task => task.id !== id)]);
+  };
+  /////////////////////////////////////////
+  //
+  const addTaskHandler = e => {
+    const newEntry = {
+      id: enteredTasks.length + 1,
+      task: toggleTask,
+      done: false,
+    };
+    setEnteredTasks([...enteredTasks, newEntry]);
+    setToggleTask('');
+  };
+  /////////////////////////////////////////
+  //
+  const UpdateTaskHandler = () => {
+    //
+  };
+  /////////////////////////////////////////
+  //
+  const cancelBtnHandler = () => {
+    //
+  };
+
   const tasks = enteredTasks.map((task, i) => (
     <React.Fragment key={task.id}>
       <div className="taskBg col">
         <div className={task.done ? 'done' : ''}>
           <span className="taskNumber">{i + 1}</span>
-          <span className="taskText">{task.title}</span>
+          <span className="taskText">{task.task}</span>
         </div>
         <div className="iconsWrap">
-          <span title="Completed / Not Completed">
+          <span
+            title="Completed / Not Completed"
+            onClick={() => completeToggleHandler(task.id)}
+          >
             <FontAwesomeIcon icon={faCircleCheck} />
           </span>
           <span title="Edit">
             <FontAwesomeIcon icon={faPen} />
           </span>
-          <span title="Delete">
+          <span title="Delete" onClick={() => deleteBtnHandler(task.id)}>
             <FontAwesomeIcon icon={faTrashCan} />
           </span>
         </div>
@@ -57,14 +111,21 @@ function App() {
       <>
         <div className="row">
           <div className="col">
-            <input className="form-control form-control-lg" />
+            <input
+              className="form-control form-control-lg"
+              value={toggleTask}
+              onChange={e => setToggleTask(e.target.value)}
+            />
           </div>
           <div className="col-auto">
-            <button className="btn btn-lg btn-success">Add Task</button>
+            <button className="btn btn-lg btn-success" onClick={addTaskHandler}>
+              Add Task
+            </button>
           </div>
         </div>
         <br />
       </>
+      <>{tasks}</>
     </div>
   );
 }
