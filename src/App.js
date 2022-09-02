@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -6,7 +7,6 @@ import {
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
-import React, { useState } from 'react';
 
 function App() {
   /////////////////////////////////////////
@@ -14,53 +14,51 @@ function App() {
   const [enteredTasks, setEnteredTasks] = useState([
     { id: 1, task: 'Task 1', done: false },
   ]);
-  const [updateTask, setUpdateTask] = useState('');
-  const [toggleTask, setToggleTask] = useState('');
-  /////////////////////////////////////////
-  //
-  // const onChangeHandler = e => setToggleTask(e.target.value);
-  /////////////////////////////////////////
-  //
-  const completeToggleHandler = id => {
-    setEnteredTasks([
-      ...enteredTasks.map(task => {
-        if (id === task.id) {
-          return { id: id, task: task.task, done: !task.done };
-        }
-        return task;
-      }),
-    ]);
+  const [newTask, setNewTask] = useState('');
+  const [update, setUpdate] = useState('');
+
+  const addNewTaskHandler = () => {
+    if (newTask) {
+      const newEntry = {
+        id: enteredTasks.length + 1,
+        task: newTask,
+        done: false,
+      };
+      setNewTask('');
+      setEnteredTasks([...enteredTasks, newEntry]);
+    }
   };
-  /////////////////////////////////////////
-  //
-  const editBtnHandler = () => {
-    //
-  };
-  /////////////////////////////////////////
-  //
-  const deleteBtnHandler = id => {
-    setEnteredTasks([...enteredTasks.filter(task => task.id !== id)]);
-  };
-  /////////////////////////////////////////
-  //
-  const addTaskHandler = e => {
-    const newEntry = {
-      id: enteredTasks.length + 1,
-      task: toggleTask,
-      done: false,
+
+  const updateTaskHandler = e => {
+    const entry = {
+      id: update.id,
+      task: e.target.value,
+      done: update.done ? true : false,
     };
-    setEnteredTasks([...enteredTasks, newEntry]);
-    setToggleTask('');
+    setUpdate(entry);
   };
-  /////////////////////////////////////////
-  //
-  const UpdateTaskHandler = () => {
-    //
-  };
-  /////////////////////////////////////////
-  //
+
   const cancelBtnHandler = () => {
-    //
+    setUpdate('');
+  };
+
+  const completeToggleHandler = id => {
+    const filtered = enteredTasks.map(task => {
+      if (task.id === id) {
+        return { ...task, done: !task.done };
+      }
+      return task;
+    });
+    setEnteredTasks(filtered);
+  };
+
+  const updateBtnHandler = () => {
+    const newEnrty = [...enteredTasks.filter(task => task.id !== update.id)];
+    setEnteredTasks([...newEnrty, update]);
+  };
+
+  const deleteTaskHandler = id => {
+    setEnteredTasks([...enteredTasks.filter(task => task.id !== id)]);
   };
 
   const tasks = enteredTasks.map((task, i) => (
@@ -77,10 +75,19 @@ function App() {
           >
             <FontAwesomeIcon icon={faCircleCheck} />
           </span>
-          <span title="Edit">
+          <span
+            title="Edit"
+            onClick={() =>
+              setUpdate({
+                id: task.id,
+                task: task.task,
+                done: task.done ? true : false,
+              })
+            }
+          >
             <FontAwesomeIcon icon={faPen} />
           </span>
-          <span title="Delete" onClick={() => deleteBtnHandler(task.id)}>
+          <span title="Delete" onClick={() => deleteTaskHandler(task.id)}>
             <FontAwesomeIcon icon={faTrashCan} />
           </span>
         </div>
@@ -94,37 +101,56 @@ function App() {
       <br></br>
       {/* Update task  */}
       {/* // update field */}
+      {update ? (
+        <>
+          <div className="row">
+            <div className="col">
+              <input
+                className="form-control form-control-lg"
+                value={update && update.task}
+                onChange={e => updateTaskHandler(e)}
+              />
+            </div>
+            <div className="col-auto">
+              <button
+                className="btn btn-lg btn-success"
+                onClick={updateBtnHandler}
+              >
+                Update
+              </button>
+              <button
+                className="btn btn-lg btn-warning"
+                onClick={cancelBtnHandler}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+          <br />
+        </>
+      ) : (
+        <>
+          <div className="row">
+            <div className="col">
+              <input
+                className="form-control form-control-lg"
+                value={newTask}
+                onChange={e => setNewTask(e.target.value)}
+              />
+            </div>
+            <div className="col-auto">
+              <button
+                className="btn btn-lg btn-success"
+                onClick={addNewTaskHandler}
+              >
+                Add Task
+              </button>
+            </div>
+          </div>
+          <br />
+        </>
+      )}
 
-      <>
-        <div className="row">
-          <div className="col">
-            <input className="form-control form-control-lg" />
-          </div>
-          <div className="col-auto">
-            <button className="btn btn-lg btn-success">Update</button>
-            <button className="btn btn-lg btn-warning">Cancel</button>
-          </div>
-        </div>
-        <br />
-      </>
-
-      <>
-        <div className="row">
-          <div className="col">
-            <input
-              className="form-control form-control-lg"
-              value={toggleTask}
-              onChange={e => setToggleTask(e.target.value)}
-            />
-          </div>
-          <div className="col-auto">
-            <button className="btn btn-lg btn-success" onClick={addTaskHandler}>
-              Add Task
-            </button>
-          </div>
-        </div>
-        <br />
-      </>
       <>{tasks}</>
     </div>
   );
