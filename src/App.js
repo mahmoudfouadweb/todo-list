@@ -10,96 +10,155 @@ import './App.css';
 
 function App() {
   /////////////////////////////////////////
-  //
+  // DONE
   const [enteredTasks, setEnteredTasks] = useState([]);
   /////////////////////////////////////////
-  const [newTask, setNewTask] = useState([]);
+  // DONE
+  const [newTask, setNewTask] = useState('');
   /////////////////////////////////////////
-  const [updateTask, setUpdateTask] = useState([]);
+  //
+  const [updateTask, setUpdateTask] = useState('');
   /////////////////////////////////////////
+  // DONE
   const completeToggleHandler = id => {
-    //
+    const toggleTask = enteredTasks.map(task => {
+      if (task.id === id) {
+        return { ...task, done: !task.done };
+      }
+      return task;
+    });
+    setEnteredTasks(toggleTask);
   };
   /////////////////////////////////////////
-  //
-  const editHandler = id => {
-    //
+  // DONE
+  const editHandler = e => {
+    const updateEnrty = {
+      id: updateTask.id,
+      task: e.target.value,
+      done: updateTask.done ? true : false,
+    };
+    setUpdateTask(updateEnrty);
   };
   /////////////////////////////////////////
-  //
+  // DONE
   const deleteHandler = id => {
-    //
+    const filtered = enteredTasks.filter(task => task.id !== id);
+    setEnteredTasks([...filtered]);
   };
   /////////////////////////////////////////
-  //
-  const addNewTaskHandler = id => {
-    //
+  // DONE
+  const addNewTaskHandler = () => {
+    const newEntry = {
+      id: enteredTasks.length + 1,
+      task: newTask,
+      done: false,
+    };
+    setEnteredTasks([...enteredTasks, newEntry]);
+    setNewTask('');
   };
   /////////////////////////////////////////
-  //
-  const updateBtnHandler = id => {
-    //
+  // DONE
+  const updateBtnHandler = () => {
+    const filtred = enteredTasks.filter(task => task.id !== updateTask.id);
+    setEnteredTasks([...filtred, updateTask]);
   };
   /////////////////////////////////////////
-  //
-  const cancelBtnHandler = id => {
-    //
+  // DONE
+  const cancelBtnHandler = () => {
+    setUpdateTask('');
   };
+
+  /////////////////////////////////////////
+  const updateElement = (
+    <>
+      <div className="row">
+        <div className="col">
+          <input
+            className="form-control form-control-lg"
+            value={updateTask && updateTask.task}
+            onChange={e => editHandler(e)}
+          />
+        </div>
+        <div className="col-auto">
+          <button className="btn btn-lg btn-success" onClick={updateBtnHandler}>
+            Update
+          </button>
+          <button className="btn btn-lg btn-warning" onClick={cancelBtnHandler}>
+            Cancel
+          </button>
+        </div>
+      </div>
+      <br />
+    </>
+  );
+
+  /////////////////////////////////////////
+  const newTaskElement = (
+    <>
+      <div className="row">
+        <div className="col">
+          <input
+            className="form-control form-control-lg"
+            value={newTask}
+            onChange={e => setNewTask(e.target.value)}
+          />
+        </div>
+        <div className="col-auto">
+          <button
+            className="btn btn-lg btn-success"
+            onClick={addNewTaskHandler}
+          >
+            Add Task
+          </button>
+        </div>
+      </div>
+      <br />
+    </>
+  );
 
   const tasks = enteredTasks.map((task, i) => (
     <React.Fragment key={task.id}>
       <div className="taskBg col">
         <div className={task.done ? 'done' : ''}>
           <span className="taskNumber">{i + 1}</span>
-          <span className="taskText">{task.title}</span>
+          <span className="taskText">{task.task}</span>
         </div>
         <div className="iconsWrap">
-          <span title="Completed / Not Completed">
+          <span
+            title="Completed / Not Completed"
+            onClick={id => completeToggleHandler(task.id)}
+          >
             <FontAwesomeIcon icon={faCircleCheck} />
           </span>
-          <span title="Edit">
+          <span
+            title="Edit"
+            onClick={() =>
+              setUpdateTask({
+                id: task.id,
+                task: task.task,
+                done: task.done ? true : false,
+              })
+            }
+          >
             <FontAwesomeIcon icon={faPen} />
           </span>
-          <span title="Delete">
+          <span title="Delete" onClick={() => deleteHandler(task.id)}>
             <FontAwesomeIcon icon={faTrashCan} />
           </span>
         </div>
       </div>
     </React.Fragment>
   ));
+
+  /////////////////////////////////////////
+  //
   return (
     <div className="App container">
       <br></br>
       <h1>Todo List App</h1>
       <br></br>
-      {/* Update task  */}
-      {/* // update field */}
-
-      <>
-        <div className="row">
-          <div className="col">
-            <input className="form-control form-control-lg" />
-          </div>
-          <div className="col-auto">
-            <button className="btn btn-lg btn-success">Update</button>
-            <button className="btn btn-lg btn-warning">Cancel</button>
-          </div>
-        </div>
-        <br />
-      </>
-
-      <>
-        <div className="row">
-          <div className="col">
-            <input className="form-control form-control-lg" />
-          </div>
-          <div className="col-auto">
-            <button className="btn btn-lg btn-success">Add Task</button>
-          </div>
-        </div>
-        <br />
-      </>
-      <>{tasks}</>
+      {updateTask ? updateElement : newTaskElement}
+      {tasks}
     </div>
   );
 }
