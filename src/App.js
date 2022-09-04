@@ -11,79 +11,85 @@ import './App.css';
 function App() {
   /////////////////////////////////////////
   // DONE
-  const [enteredTasks, setEnteredTasks] = useState([]);
-  /////////////////////////////////////////
-  // DONE
+  const [enteredTasks, setEnteredTasks] = useState([
+    { id: 1, todo: 'Study English', done: false },
+  ]);
   const [newTask, setNewTask] = useState('');
-  /////////////////////////////////////////
-  //
   const [updateTask, setUpdateTask] = useState('');
   /////////////////////////////////////////
-  // DONE
-  const completeToggleHandler = id => {
-    const toggleTask = enteredTasks.map(task => {
-      if (task.id === id) {
-        return { ...task, done: !task.done };
-      }
-      return task;
-    });
-    setEnteredTasks(toggleTask);
-  };
+
   /////////////////////////////////////////
   // DONE
-  const editHandler = e => {
-    const updateEnrty = {
-      id: updateTask.id,
-      task: e.target.value,
-      done: updateTask.done ? true : false,
-    };
-    setUpdateTask(updateEnrty);
-  };
-  /////////////////////////////////////////
-  // DONE
-  const deleteHandler = id => {
-    const filtered = enteredTasks.filter(task => task.id !== id);
-    setEnteredTasks([...filtered]);
-  };
-  /////////////////////////////////////////
-  // DONE
-  const addNewTaskHandler = () => {
-    const newEntry = {
+  const newTaskHandler = () => {
+    const newTodo = {
       id: enteredTasks.length + 1,
-      task: newTask,
+      todo: newTask,
       done: false,
     };
-    setEnteredTasks([...enteredTasks, newEntry]);
+    setEnteredTasks([...enteredTasks, newTodo]);
     setNewTask('');
   };
   /////////////////////////////////////////
   // DONE
-  const updateBtnHandler = () => {
-    const filtred = enteredTasks.filter(task => task.id !== updateTask.id);
-    setEnteredTasks([...filtred, updateTask]);
+  const updateTaskHandler = e => {
+    const filtered = enteredTasks.filter(todo => todo.id !== updateTask.id);
+    setEnteredTasks([...filtered, updateTask]);
+    setUpdateTask('');
   };
   /////////////////////////////////////////
   // DONE
-  const cancelBtnHandler = () => {
+  const cancelUpdateHandler = e => {
     setUpdateTask('');
   };
-
   /////////////////////////////////////////
+  // DONE
+  const completeTaskHandler = id => {
+    const completed = enteredTasks.map(todo => {
+      if (todo.id === id) {
+        return { ...todo, done: !todo.done };
+      }
+      return todo;
+    });
+    setEnteredTasks(completed);
+  };
+  /////////////////////////////////////////
+  // DONE
+  const editTaskHandler = e => {
+    const entry = {
+      id: updateTask.id,
+      todo: e.target.value,
+      done: updateTask.done ? true : false,
+    };
+    setUpdateTask(entry);
+  };
+  /////////////////////////////////////////
+  // DONE
+  const deleteTaskHandler = id => {
+    const filteredAfterDelete = enteredTasks.filter(todo => todo.id !== id);
+    setEnteredTasks(filteredAfterDelete);
+  };
+
   const updateElement = (
     <>
       <div className="row">
         <div className="col">
           <input
             className="form-control form-control-lg"
-            value={updateTask && updateTask.task}
-            onChange={e => editHandler(e)}
+            value={updateTask && updateTask.todo}
+            onChange={e => editTaskHandler(e)}
           />
         </div>
         <div className="col-auto">
-          <button className="btn btn-lg btn-success" onClick={updateBtnHandler}>
+          <button
+            className="btn btn-lg btn-success"
+            onClick={updateTaskHandler}
+          >
             Update
           </button>
-          <button className="btn btn-lg btn-warning" onClick={cancelBtnHandler}>
+          <button
+            className="btn btn-lg btn-warning"
+            onClick={cancelUpdateHandler}
+          >
             Cancel
           </button>
         </div>
@@ -104,10 +110,7 @@ function App() {
           />
         </div>
         <div className="col-auto">
-          <button
-            className="btn btn-lg btn-success"
-            onClick={addNewTaskHandler}
-          >
+          <button className="btn btn-lg btn-success" onClick={newTaskHandler}>
             Add Task
           </button>
         </div>
@@ -121,12 +124,12 @@ function App() {
       <div className="taskBg col">
         <div className={task.done ? 'done' : ''}>
           <span className="taskNumber">{i + 1}</span>
-          <span className="taskText">{task.task}</span>
+          <span className="taskText">{task.todo}</span>
         </div>
         <div className="iconsWrap">
           <span
             title="Completed / Not Completed"
-            onClick={id => completeToggleHandler(task.id)}
+            onClick={() => completeTaskHandler(task.id)}
           >
             <FontAwesomeIcon icon={faCircleCheck} />
           </span>
@@ -135,14 +138,14 @@ function App() {
             onClick={() =>
               setUpdateTask({
                 id: task.id,
-                task: task.task,
+                todo: task.todo,
                 done: task.done ? true : false,
               })
             }
           >
             <FontAwesomeIcon icon={faPen} />
           </span>
-          <span title="Delete" onClick={() => deleteHandler(task.id)}>
+          <span title="Delete" onClick={() => deleteTaskHandler(task.id)}>
             <FontAwesomeIcon icon={faTrashCan} />
           </span>
         </div>
@@ -157,7 +160,8 @@ function App() {
       <br></br>
       <h1>Todo List App</h1>
       <br></br>
-      {updateTask ? updateElement : newTaskElement}
+      {updateElement}
+      {newTaskElement}
       {tasks}
     </div>
   );
