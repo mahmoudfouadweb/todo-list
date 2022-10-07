@@ -32,38 +32,68 @@ function App() {
   /////////////////////////////////////////
   // DONE
   const completeTaskSingeHandler = id => {
-    //
+    const newUpdateCompletion = enteredTasks.map(todo => {
+      if (todo.id === id) {
+        return { ...todo, done: !todo.done };
+      }
+      return todo;
+    });
+    setEnteredTasks(newUpdateCompletion);
   };
   /////////////////////////////////////////
   // DONE
-  const editTaskHandler = id => {
-    //
+  const editTaskHandler = e => {
+    const newEntry = {
+      id: updateTask.id,
+      todo: e.target.value,
+      done: updateTask.done ? true : false,
+    };
+    setUpdateTask(newEntry);
   };
   /////////////////////////////////////////
   // DONE
   const deleteTaskHandler = id => {
-    //
+    const freshTodos = enteredTasks.filter(todo => todo.id !== id);
+    setEnteredTasks([...freshTodos]);
   };
   /////////////////////////////////////////
   // DONE
-  const updateTaskHandler = id => {
-    //
+  const updateTaskHandler = () => {
+    const filteredTodos = enteredTasks.filter(
+      todo => todo.id !== updateTask.id
+    );
+    setEnteredTasks([...filteredTodos, updateTask]);
+    setUpdateTask('');
   };
   /////////////////////////////////////////
   // DONE
   const cancelUpdateHandler = id => {
-    //
+    setUpdateTask('');
   };
 
   const updateElement = (
     <>
       <div className="row">
         <div className="col">
-          <input className="form-control form-control-lg" />
+          <input
+            className="form-control form-control-lg"
+            value={updateTask && updateTask.todo}
+            onChange={e => editTaskHandler(e)}
+          />
         </div>
         <div className="col-auto">
-          <button className="btn btn-lg btn-success">Update</button>
-          <button className="btn btn-lg btn-warning">Cancel</button>
+          <button
+            className="btn btn-lg btn-success"
+            onClick={updateTaskHandler}
+          >
+            Update
+          </button>
+          <button
+            className="btn btn-lg btn-warning"
+            onClick={cancelUpdateHandler}
+          >
+            Cancel
+          </button>
         </div>
       </div>
       <br />
@@ -99,13 +129,25 @@ function App() {
           <span className="taskText">{task.todo}</span>
         </div>
         <div className="iconsWrap">
-          <span title="Completed / Not Completed">
+          <span
+            title="Completed / Not Completed"
+            onClick={() => completeTaskSingeHandler(task.id)}
+          >
             <FontAwesomeIcon icon={faCircleCheck} />
           </span>
-          <span title="Edit">
+          <span
+            title="Edit"
+            onClick={() =>
+              setUpdateTask({
+                id: task.id,
+                todo: task.todo,
+                done: task.done ? true : false,
+              })
+            }
+          >
             <FontAwesomeIcon icon={faPen} />
           </span>
-          <span title="Delete">
+          <span title="Delete" onClick={() => deleteTaskHandler(task.id)}>
             <FontAwesomeIcon icon={faTrashCan} />
           </span>
         </div>
@@ -120,6 +162,7 @@ function App() {
       <br></br>
       <h1>Todo List App</h1>
       <br></br>
+      {updateElement}
       {newTaskElement}
       {tasks}
     </div>
